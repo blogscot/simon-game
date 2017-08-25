@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Panel from "./Panel"
+import Control from "./Control"
 
 class App extends Component {
   render() {
@@ -12,6 +13,9 @@ class App extends Component {
         <div style={styles.row}>
           <Panel style={styles.bottomLeftPanelStyle} />
           <Panel style={styles.bottomRightPanelStyle} />
+        </div>
+        <div style={styles.row}>
+          <Control style={styles.controlStyle} />
         </div>
       </div>
     )
@@ -47,6 +51,14 @@ const styles = {
     borderRadius: "0 0 0 300px",
     background: "#c3c32f",
     borderWidth: "8px 8px 16px 16px"
+  },
+  controlStyle: {
+    position: "relative",
+    top: "-484px",
+    background: "white",
+    borderRadius: "300px",
+    border: "16px solid black",
+    zIndex: "1"
   }
 }
 
