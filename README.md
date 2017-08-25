@@ -1,6 +1,6 @@
 # Build a Simon Game
 
-You're mission, if you chose to accept it, is:
+Your mission, if you chose to accept it, is:
 
 ## User Stories
 
