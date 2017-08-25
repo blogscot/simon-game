@@ -2,35 +2,39 @@ import React from "react"
 
 import PropTypes from "prop-types"
 
-const Display = ({ style, count }) => {
-  Object.assign(styles.display, style)
+const Display = ({ count }) => {
   return (
     <div style={styles.display}>
       {count}
+      <div style={styles.text}>Count</div>
     </div>
   )
 }
 
 const styles = {
   display: {
-    height: "50px",
-    width: "56px",
+    boxSizing: "border-box",
+    height: "70px",
+    width: "70px",
     border: "3px solid black",
-    background: "red",
-    color: "white",
+    background: "#2d0303",
+    color: "#ca1c1c",
     textAlign: "right",
     fontSize: "3em",
-    padding: "0.15em",
+    padding: "0.18em",
     borderRadius: "0.25em"
+  },
+  text: {
+    fontSize: "15px",
+    color: "black",
+    textTransform: "uppercase",
+    position: "relative",
+    top: "10px"
   }
 }
 
 Display.propTypes = {
   count: PropTypes.number.isRequired
-}
-
-Display.propTypes = {
-  style: PropTypes.object.isRequired
 }
 
 export default Display
