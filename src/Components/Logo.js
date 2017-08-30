@@ -1,5 +1,10 @@
-import React from "react"
+import React from 'react'
 
+/**
+ * Displays the game logo.
+ * 
+ * @returns component
+ */
 const Logo = () => {
   return (
     <div style={styles.logo}>
@@ -11,14 +16,14 @@ const Logo = () => {
 
 const styles = {
   logo: {
-    display: "flex",
-    justifyContent: "center",
-    fontSize: "5em",
-    fontFamily: "bookman",
-    marginTop: "0.5em"
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: '5em',
+    fontFamily: 'bookman',
+    marginTop: '0.5em'
   },
   trademark: {
-    fontSize: "0.3em"
+    fontSize: '0.3em'
   }
 }
 

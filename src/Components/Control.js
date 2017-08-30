@@ -6,6 +6,13 @@ import PowerSwitch from './PowerSwitch'
 
 import PropTypes from 'prop-types'
 
+/**
+ * The Control compentent contains the display and button
+ * controls.
+ * 
+ * @param {object} style - the injected component styles 
+ * @returns component 
+ */
 const Control = ({ style }) => {
   Object.assign(styles.panel, style)
   return (

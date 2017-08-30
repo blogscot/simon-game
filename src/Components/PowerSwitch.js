@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes, div, span } from 'styled-components'
+import styled, { keyframes, div } from 'styled-components'
 import PropTypes from 'prop-types'
 
 const turnOn = keyframes`
@@ -26,6 +26,12 @@ const Switch = styled.div`
   animation-iteration-count: 1;
 `
 
+/**
+ * The PowerSwitch component handle starting and stopping
+ * the game.
+ * 
+ * @returns component
+ */
 const PowerSwitch = () => {
   let switchStyles = styles.powerSwitch
   return (
