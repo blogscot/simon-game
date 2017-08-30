@@ -15,6 +15,7 @@ import PropTypes from 'prop-types'
  */
 const Control = ({ style }) => {
   Object.assign(styles.panel, style)
+  const powerState = 'reset'
   return (
     <div style={styles.panel}>
       <Logo />
@@ -25,7 +26,7 @@ const Control = ({ style }) => {
         <Button text={'strict'}
           style={styles.strictButton} />
       </div>
-      <PowerSwitch />
+      <PowerSwitch powerState={powerState} />
     </div>
   )
 }

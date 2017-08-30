@@ -8,6 +8,12 @@ const turnOn = keyframes`
   100% {left:20px; top:0px;}
  }
 `
+const turnOff = keyframes`
+{
+  0%   {left:20px; top:0px;}
+  100% {left:0px; top:0px;}
+ }
+`
 
 const Power = styled.div`
   padding: 0px;
@@ -15,12 +21,19 @@ const Power = styled.div`
   width: 45px;
 `
 
+const InitialSwitch = styled.div`
+  width: 25px;
+  height: 25px;
+  position: relative;
+  background-color: red;
+`
+
 const Switch = styled.div`
   width: 25px;
   height: 25px;
   position: relative;
   background-color: red;
-  animation-name: ${turnOn};
+  animation-name: ${props => (props.on ? turnOn : turnOff)};
   animation-duration: 1.3s;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
@@ -32,13 +45,15 @@ const Switch = styled.div`
  * 
  * @returns component
  */
-const PowerSwitch = () => {
+const PowerSwitch = ({ powerState }) => {
   let switchStyles = styles.powerSwitch
   return (
     <div style={switchStyles}>
       <span>OFF</span>&nbsp;
       <Power>
-        <Switch />
+        {powerState === 'on'
+          ? <Switch on />
+          : powerState === 'off' ? <Switch /> : <InitialSwitch />}
       </Power>&nbsp;
       <span>ON</span>
     </div>
@@ -56,7 +71,7 @@ const styles = {
 }
 
 PowerSwitch.propTypes = {
-  style: PropTypes.object.isRequired
+  powerState: PropTypes.string.isRequired
 }
 
 export default PowerSwitch
