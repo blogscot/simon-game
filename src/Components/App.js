@@ -46,12 +46,12 @@ const styles = {
   },
   topRightPanelStyle: {
     borderRadius: '0 300px 0 0',
-    background: 'red',
+    background: '#a50303',
     borderWidth: '16px 16px 8px 8px'
   },
   bottomRightPanelStyle: {
     borderRadius: '0 0 300px 0',
-    background: '#7595ef',
+    background: '#5b75bf',
     borderWidth: '8px 16px 16px 8px'
   },
   bottomLeftPanelStyle: {

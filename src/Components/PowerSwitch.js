@@ -40,7 +40,7 @@ const Switch = styled.div`
 `
 
 /**
- * The PowerSwitch component handle starting and stopping
+ * The PowerSwitch component handles starting and stopping
  * the game.
  * 
  * @returns component
