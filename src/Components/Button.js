@@ -6,7 +6,8 @@ import PropTypes from 'prop-types'
  * Displays a configurable game button 
  * 
  * @param {string} text  - the button text
- * @param {object} style - the injected component styles 
+ * @param {object} style - the injected component styles
+ * @param {function} onClick - the button click handler
  * @returns component
  */
 const Button = ({ text, style, onClick }) => {

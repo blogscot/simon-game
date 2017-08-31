@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
  * presses to be repeated by the player.
  * 
  * @param {number} count - the current number in the game sequence
+ * @param {boolean} displayOn - is the display currently enabled?
  * @returns component
  */
 const Display = ({ count, displayOn }) => {

@@ -40,9 +40,11 @@ const Switch = styled.div`
 `
 
 /**
- * The PowerSwitch component handles starting and stopping
- * the game.
+ * The PowerSwitch component handles powering the game on and off.
+ * Note, the switch animates 'On' and 'Off' and starts initially 'Reset'.
  * 
+ * @param {boolean} powerState - the power state can be 'Reset', 'Off' or 'On'
+ * @param {function} onClick - the power switch click handler
  * @returns component
  */
 const PowerSwitch = ({ powerState, onClick }) => {

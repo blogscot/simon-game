@@ -5,7 +5,9 @@ import PropTypes from 'prop-types'
 /**
  * Displays the current state of `Strict mode`.
  * 
- * @param {object} style - the injected component styles 
+ * @param {object} style - the injected component styles
+ * @param {boolean} strictMode - the current strict mode state
+ * @param {boolean} hasPower - does the game have power?
  * @returns component
  */
 const Indicator = ({ style, strictMode, hasPower }) => {
