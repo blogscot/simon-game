@@ -13,22 +13,39 @@ import PropTypes from 'prop-types'
  * @param {object} style - the injected component styles 
  * @returns component 
  */
-const Control = ({ style }) => {
-  Object.assign(styles.panel, style)
-  const powerState = 'reset'
-  return (
-    <div style={styles.panel}>
-      <Logo />
-      <div style={styles.strip}>
-        <Display count={0} />
-        <Button text={'start'}
-          style={styles.startButton} />
-        <Button text={'strict'}
-          style={styles.strictButton} />
+class Control extends React.Component {
+  state = {
+    powerState: 'Reset'
+  }
+  handlePowerSwitch = () => {
+    let powerState
+    if (this.state.powerState !== 'On') {
+      powerState = 'On'
+    } else {
+      powerState = 'Off'
+    }
+    this.setState({ powerState })
+  }
+  render() {
+    let { style } = this.props
+    Object.assign(styles.panel, style)
+    return (
+      <div style={styles.panel}>
+        <Logo />
+        <div style={styles.strip}>
+          <Display count={0} />
+          <Button text={'start'}
+            style={styles.startButton} />
+          <Button text={'strict'}
+            style={styles.strictButton} />
+        </div>
+        <PowerSwitch
+          powerState={this.state.powerState}
+          onClick={this.handlePowerSwitch}
+        />
       </div>
-      <PowerSwitch powerState={powerState} />
-    </div>
-  )
+    )
+  }
 }
 
 const styles = {

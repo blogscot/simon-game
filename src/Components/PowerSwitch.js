@@ -45,15 +45,15 @@ const Switch = styled.div`
  * 
  * @returns component
  */
-const PowerSwitch = ({ powerState }) => {
+const PowerSwitch = ({ powerState, onClick }) => {
   let switchStyles = styles.powerSwitch
   return (
     <div style={switchStyles}>
       <span>OFF</span>&nbsp;
-      <Power>
-        {powerState === 'on'
+      <Power onClick={onClick}>
+        {powerState === 'On'
           ? <Switch on />
-          : powerState === 'off' ? <Switch /> : <InitialSwitch />}
+          : powerState === 'Off' ? <Switch /> : <InitialSwitch />}
       </Power>&nbsp;
       <span>ON</span>
     </div>
@@ -71,7 +71,8 @@ const styles = {
 }
 
 PowerSwitch.propTypes = {
-  powerState: PropTypes.string.isRequired
+  powerState: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 export default PowerSwitch
