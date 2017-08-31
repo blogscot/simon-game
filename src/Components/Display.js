@@ -9,10 +9,16 @@ import PropTypes from 'prop-types'
  * @param {number} count - the current number in the game sequence
  * @returns component
  */
-const Display = ({ count }) => {
+const Display = ({ count, displayOn }) => {
+  const countStyle = Object.assign(
+    {},
+    displayOn ? { visibility: 'visible' } : { visibility: 'hidden' }
+  )
   return (
     <div style={styles.display}>
-      {count}
+      <span style={countStyle}>
+        {count}
+      </span>
       <div style={styles.text}>Count</div>
     </div>
   )
@@ -41,7 +47,8 @@ const styles = {
 }
 
 Display.propTypes = {
-  count: PropTypes.number.isRequired
+  count: PropTypes.number.isRequired,
+  displayOn: PropTypes.bool.isRequired
 }
 
 export default Display

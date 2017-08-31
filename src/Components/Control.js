@@ -27,13 +27,15 @@ class Control extends React.Component {
     this.setState({ powerState })
   }
   render() {
-    let { style } = this.props
+    const { style } = this.props
+    const displayOn = this.state.powerState === 'On' ? true : false
     Object.assign(styles.panel, style)
     return (
       <div style={styles.panel}>
         <Logo />
         <div style={styles.strip}>
-          <Display count={0} />
+          <Display count={0}
+            displayOn={displayOn} />
           <Button text={'start'}
             style={styles.startButton} />
           <Button text={'strict'}

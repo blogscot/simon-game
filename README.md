@@ -13,4 +13,4 @@ Your mission, if you chose to accept it, is:
 7. I can play in strict mode where if I get a button press wrong, it notifies me that I have done so, and the game restarts at a new random series of button presses.
 8. I can win the game by getting a series of 20 steps correct. I am notified of my victory, then the game starts over.
 
-See [Build a Simon Game](https://www.freecodecamp.org/challenges/build-a-simon-game)
+See [Build a Simon Game](https://www.freecodecamp.org/challenges/build-a-simon-game) for more details.
