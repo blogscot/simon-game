@@ -8,9 +8,13 @@ import PropTypes from 'prop-types'
  * @param {object} style - the injected component styles 
  * @returns component
  */
-const Indicator = ({ style }) => {
-  Object.assign(styles.button, style)
-  return <div style={styles.button} />
+const Indicator = ({ style, strictMode, hasPower }) => {
+  const indicatorStyle =
+    hasPower && strictMode
+      ? { backgroundColor: 'red' }
+      : { backgroundColor: 'black' }
+  const buttonStyle = Object.assign({}, styles.button, style, indicatorStyle)
+  return <div style={buttonStyle} />
 }
 
 const styles = {
@@ -18,13 +22,14 @@ const styles = {
     width: '10px',
     height: '10px',
     borderRadius: '10px',
-    backgroundColor: 'red',
     border: '3px solid black'
   }
 }
 
 Indicator.propTypes = {
-  style: PropTypes.object.isRequired
+  style: PropTypes.object.isRequired,
+  hasPower: PropTypes.bool.isRequired,
+  strictMode: PropTypes.bool.isRequired
 }
 
 export default Indicator

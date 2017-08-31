@@ -9,11 +9,12 @@ import PropTypes from 'prop-types'
  * @param {object} style - the injected component styles 
  * @returns component
  */
-const Button = ({ text, style }) => {
+const Button = ({ text, style, onClick }) => {
   Object.assign(styles.button, style)
   return (
     <div style={styles.base}>
-      <div style={styles.button} />
+      <div style={styles.button}
+        onClick={onClick} />
       <div style={styles.text}>
         {text}
       </div>
@@ -45,7 +46,8 @@ const styles = {
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
-  style: PropTypes.object.isRequired
+  style: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 export default Button

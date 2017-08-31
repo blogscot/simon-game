@@ -16,7 +16,8 @@ import PropTypes from 'prop-types'
  */
 class Control extends React.Component {
   state = {
-    powerState: 'Reset'
+    powerState: 'Reset',
+    strictMode: false
   }
   handlePowerSwitch = () => {
     let powerState
@@ -25,7 +26,15 @@ class Control extends React.Component {
     } else {
       powerState = 'Off'
     }
-    this.setState({ powerState })
+    this.setState({ powerState, strictMode: false })
+  }
+  handleStrictButton = () => {
+    this.setState({
+      strictMode: !this.state.strictMode
+    })
+  }
+  handleStartButton = () => {
+    console.log('start button pressed')
   }
   render() {
     const { style } = this.props
@@ -37,11 +46,21 @@ class Control extends React.Component {
         <div style={styles.strip}>
           <Display count={0}
             displayOn={displayOn} />
-          <Button text={'start'}
-            style={styles.startButton} />
-          <Button text={'strict'}
-            style={styles.strictButton} />
-          <Indicator style={styles.indicator} />
+          <Button
+            text={'start'}
+            style={styles.startButton}
+            onClick={this.handleStartButton}
+          />
+          <Button
+            text={'strict'}
+            style={styles.strictButton}
+            onClick={this.handleStrictButton}
+          />
+          <Indicator
+            style={styles.indicator}
+            hasPower={this.state.powerState === 'On'}
+            strictMode={this.state.strictMode}
+          />
         </div>
         <PowerSwitch
           powerState={this.state.powerState}
