@@ -39,14 +39,7 @@ const styles = {
     color: 'black',
     textTransform: 'uppercase',
     position: 'relative',
-    top: '10px'
-  },
-  activeIndicator: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '8px',
-    border: '2px solid black',
-    background: 'orange'
+    top: '23px'
   }
 }
 

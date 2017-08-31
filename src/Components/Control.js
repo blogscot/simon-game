@@ -2,6 +2,7 @@ import React from 'react'
 import Logo from './Logo'
 import Display from './Display'
 import Button from './Button'
+import Indicator from './Indicator'
 import PowerSwitch from './PowerSwitch'
 
 import PropTypes from 'prop-types'
@@ -40,6 +41,7 @@ class Control extends React.Component {
             style={styles.startButton} />
           <Button text={'strict'}
             style={styles.strictButton} />
+          <Indicator style={styles.indicator} />
         </div>
         <PowerSwitch
           powerState={this.state.powerState}
@@ -57,16 +59,21 @@ const styles = {
   },
   strip: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'space-around',
-    width: '260px',
-    marginLeft: '20px'
+    width: '300px',
+    marginLeft: '30px'
   },
   startButton: {
     background: 'red'
   },
   strictButton: {
     background: 'yellow'
+  },
+  indicator: {
+    position: 'relative',
+    top: '-51px',
+    left: '-63px'
   }
 }
 
