@@ -22,7 +22,8 @@ import PropTypes from 'prop-types'
 class Control extends React.Component {
   state = {
     powerState: 'Reset',
-    strictMode: false
+    strictMode: false,
+    isPlaying: false,
   }
   redPanelTone = new Audio(Sound1)
   bluePanelTone = new Audio(Sound2)
@@ -36,25 +37,48 @@ class Control extends React.Component {
       powerState = 'Off'
     }
     this.setState({ powerState, strictMode: false })
+
+    // clear any running timers
+    if (this.state.isPlaying) {
+      this.toneTimers.forEach(timer => clearTimeout(timer))
+    }
   }
   handleStrictButton = () => {
-    this.setState({
-      strictMode: !this.state.strictMode
-    })
+    if (!this.state.isPlaying) {
+      this.setState({
+        strictMode: !this.state.strictMode,
+      })
+    }
   }
+  /* FIXME */
   handleStartButton = () => {
-    this.playToneSequence([
-      this.redPanelTone,
-      this.greenPanelTone,
-      this.yellowPanelTone,
-      this.bluePanelTone,
-      this.redPanelTone
-    ])
+    if (this.state.powerState === 'On' && !this.state.isPlaying) {
+      this.playToneSequence([
+        this.greenPanelTone,
+        this.greenPanelTone,
+        this.redPanelTone,
+        this.redPanelTone,
+        this.bluePanelTone,
+        this.bluePanelTone,
+        this.yellowPanelTone,
+        this.yellowPanelTone,
+      ])
+    }
   }
-  playToneSequence = (tones, delay = 500) => {
-    tones.forEach((tone, index) => {
-      setTimeout(() => tone.play(), delay * index)
+  /* 
+     Note: if the delay is made is too short not all tones
+     will be played, as they overlap with each other.
+
+     While the tones are playing prevent further button 
+     presses (execept power switch)
+  */
+  playToneSequence = (tones, delay = 600) => {
+    this.setState({ isPlaying: true })
+    this.toneTimers = tones.map((tone, index) => {
+      return setTimeout(() => tone.play(), delay * index)
     })
+    // Clear isPlaying state when sequence finishes
+    setTimeout(() => this.setState({ isPlaying: false }), delay * tones.length)
   }
   render() {
     const { style } = this.props
@@ -94,30 +118,30 @@ class Control extends React.Component {
 const styles = {
   panel: {
     width: '20em',
-    height: '20em'
+    height: '20em',
   },
   strip: {
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'space-around',
     width: '300px',
-    marginLeft: '30px'
+    marginLeft: '30px',
   },
   startButton: {
-    background: 'red'
+    background: 'red',
   },
   strictButton: {
-    background: 'yellow'
+    background: 'yellow',
   },
   indicator: {
     position: 'relative',
     top: '-51px',
-    left: '-63px'
-  }
+    left: '-63px',
+  },
 }
 
 Control.propTypes = {
-  style: PropTypes.object.isRequired
+  style: PropTypes.object.isRequired,
 }
 
 export default Control
