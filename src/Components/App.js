@@ -14,15 +14,15 @@ class App extends Component {
     return (
       <div style={styles.base}>
         <div style={styles.row}>
-          <Panel style={styles.topLeftPanelStyle} />
-          <Panel style={styles.topRightPanelStyle} />
+          <Panel style={styles.topLeftPanel} />
+          <Panel style={styles.topRightPanel} />
         </div>
         <div style={styles.row}>
-          <Panel style={styles.bottomLeftPanelStyle} />
-          <Panel style={styles.bottomRightPanelStyle} />
+          <Panel style={styles.bottomLeftPanel} />
+          <Panel style={styles.bottomRightPanel} />
         </div>
         <div style={styles.row}>
-          <Control style={styles.controlStyle} />
+          <Control style={styles.control} />
         </div>
       </div>
     )
@@ -31,42 +31,42 @@ class App extends Component {
 
 const styles = {
   base: {
-    marginTop: '20px'
+    marginTop: '20px',
   },
   row: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  topLeftPanelStyle: {
+  topLeftPanel: {
     borderRadius: '300px 0 0 0',
     background: 'green',
     borderWidth: '16px 8px 8px 16px',
     borderStyle: 'solid',
-    borderColor: 'black'
+    borderColor: 'black',
   },
-  topRightPanelStyle: {
+  topRightPanel: {
     borderRadius: '0 300px 0 0',
     background: '#a50303',
-    borderWidth: '16px 16px 8px 8px'
+    borderWidth: '16px 16px 8px 8px',
   },
-  bottomRightPanelStyle: {
+  bottomRightPanel: {
     borderRadius: '0 0 300px 0',
     background: '#5b75bf',
-    borderWidth: '8px 16px 16px 8px'
+    borderWidth: '8px 16px 16px 8px',
   },
-  bottomLeftPanelStyle: {
+  bottomLeftPanel: {
     borderRadius: '0 0 0 300px',
     background: '#c3c32f',
-    borderWidth: '8px 8px 16px 16px'
+    borderWidth: '8px 8px 16px 16px',
   },
-  controlStyle: {
+  control: {
     position: 'relative',
     top: '-484px',
     background: 'white',
     borderRadius: '300px',
     border: '16px solid black',
-    zIndex: '1'
-  }
+    zIndex: '1',
+  },
 }
 
 export default App
