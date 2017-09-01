@@ -4,6 +4,7 @@ import Display from './Display'
 import Button from './Button'
 import Indicator from './Indicator'
 import PowerSwitch from './PowerSwitch'
+import PowerState from '../Libraries/PowerState'
 
 import Sound1 from '../Audio/Sound1.mp3'
 import Sound2 from '../Audio/Sound2.mp3'
@@ -21,7 +22,7 @@ import PropTypes from 'prop-types'
  */
 class Control extends React.Component {
   state = {
-    powerState: 'Reset',
+    powerState: PowerState.Reset,
     strictMode: false,
     isPlaying: false,
   }
@@ -31,10 +32,10 @@ class Control extends React.Component {
   greenPanelTone = new Audio(Sound4)
   handlePowerSwitch = () => {
     let powerState
-    if (this.state.powerState !== 'On') {
-      powerState = 'On'
+    if (this.state.powerState !== PowerState.On) {
+      powerState = PowerState.On
     } else {
-      powerState = 'Off'
+      powerState = PowerState.Off
     }
     this.setState({ powerState, strictMode: false })
 
@@ -52,7 +53,7 @@ class Control extends React.Component {
   }
   /* FIXME */
   handleStartButton = () => {
-    if (this.state.powerState === 'On' && !this.state.isPlaying) {
+    if (this.state.powerState === PowerState.On && !this.state.isPlaying) {
       this.playToneSequence([
         this.greenPanelTone,
         this.greenPanelTone,
@@ -70,19 +71,19 @@ class Control extends React.Component {
      will be played, as they overlap with each other.
 
      While the tones are playing prevent further button 
-     presses (execept power switch)
+     presses (except power switch)
   */
   playToneSequence = (tones, delay = 600) => {
     this.setState({ isPlaying: true })
     this.toneTimers = tones.map((tone, index) => {
       return setTimeout(() => tone.play(), delay * index)
     })
-    // Clear isPlaying state when sequence finishes
+    // Clear isPlaying when sequence finishes
     setTimeout(() => this.setState({ isPlaying: false }), delay * tones.length)
   }
   render() {
     const { style } = this.props
-    const displayOn = this.state.powerState === 'On' ? true : false
+    const displayOn = this.state.powerState === PowerState.On ? true : false
     Object.assign(styles.panel, style)
     return (
       <div style={styles.panel}>
@@ -102,7 +103,7 @@ class Control extends React.Component {
           />
           <Indicator
             style={styles.indicator}
-            hasPower={this.state.powerState === 'On'}
+            hasPower={this.state.powerState === PowerState.On}
             strictMode={this.state.strictMode}
           />
         </div>

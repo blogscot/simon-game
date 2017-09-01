@@ -24,14 +24,14 @@ const styles = {
     width: '10px',
     height: '10px',
     borderRadius: '10px',
-    border: '3px solid black'
-  }
+    border: '3px solid black',
+  },
 }
 
 Indicator.propTypes = {
   style: PropTypes.object.isRequired,
   hasPower: PropTypes.bool.isRequired,
-  strictMode: PropTypes.bool.isRequired
+  strictMode: PropTypes.bool.isRequired,
 }
 
 export default Indicator

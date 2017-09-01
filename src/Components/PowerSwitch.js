@@ -1,4 +1,6 @@
 import React from 'react'
+import PowerState from '../Libraries/PowerState'
+
 import styled, { keyframes, div } from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -52,9 +54,9 @@ const PowerSwitch = ({ powerState, onClick }) => {
     <div style={switchStyles}>
       <span>OFF</span>&nbsp;
       <Power onClick={onClick}>
-        {powerState === 'On'
+        {powerState === PowerState.On
           ? <Switch on />
-          : powerState === 'Off' ? <Switch /> : <InitialSwitch />}
+          : powerState === PowerState.Off ? <Switch /> : <InitialSwitch />}
       </Power>&nbsp;
       <span>ON</span>
     </div>
@@ -67,13 +69,13 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    top: '40px'
-  }
+    top: '40px',
+  },
 }
 
 PowerSwitch.propTypes = {
   powerState: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 }
 
 export default PowerSwitch
