@@ -5,6 +5,11 @@ import Button from './Button'
 import Indicator from './Indicator'
 import PowerSwitch from './PowerSwitch'
 
+import Sound1 from '../Audio/Sound1.mp3'
+import Sound2 from '../Audio/Sound2.mp3'
+import Sound3 from '../Audio/Sound3.mp3'
+import Sound4 from '../Audio/Sound4.mp3'
+
 import PropTypes from 'prop-types'
 
 /**
@@ -19,6 +24,10 @@ class Control extends React.Component {
     powerState: 'Reset',
     strictMode: false
   }
+  redPanelTone = new Audio(Sound1)
+  bluePanelTone = new Audio(Sound2)
+  yellowPanelTone = new Audio(Sound3)
+  greenPanelTone = new Audio(Sound4)
   handlePowerSwitch = () => {
     let powerState
     if (this.state.powerState !== 'On') {
@@ -34,7 +43,18 @@ class Control extends React.Component {
     })
   }
   handleStartButton = () => {
-    console.log('start button pressed')
+    this.playToneSequence([
+      this.redPanelTone,
+      this.greenPanelTone,
+      this.yellowPanelTone,
+      this.bluePanelTone,
+      this.redPanelTone
+    ])
+  }
+  playToneSequence = (tones, delay = 500) => {
+    tones.forEach((tone, index) => {
+      setTimeout(() => tone.play(), delay * index)
+    })
   }
   render() {
     const { style } = this.props
