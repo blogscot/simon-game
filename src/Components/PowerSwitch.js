@@ -26,13 +26,12 @@ const InitialSwitch = styled.div`
   height: 25px;
   position: relative;
   background-color: red;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
-const Switch = styled.div`
-  width: 25px;
-  height: 25px;
-  position: relative;
-  background-color: red;
+const Switch = InitialSwitch.extend`
   animation-name: ${props => (props.on ? turnOn : turnOff)};
   animation-duration: 1.3s;
   animation-fill-mode: forwards;
