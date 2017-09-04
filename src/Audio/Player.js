@@ -26,6 +26,13 @@ class Player {
       this.toneTimers.forEach(timer => clearTimeout(timer))
     }
   }
+  /* 
+     Note: if the delay is made is too short not all tones
+     will be played as they interfere with each other.
+
+     While the tones are playing prevent further button 
+     presses (except power switch)
+  */
   playSequence = (tones, delay = 600) => {
     this.isPlaying = true
     this.toneTimers = tones.map((tone, index) => {

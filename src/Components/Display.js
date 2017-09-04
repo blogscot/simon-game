@@ -10,16 +10,14 @@ import PropTypes from 'prop-types'
  * @param {boolean} displayOn - is the display currently enabled?
  * @returns component
  */
-const Display = ({ count, displayOn }) => {
+const Display = ({ count, hasPower }) => {
   const countStyle = Object.assign(
     {},
-    displayOn ? { visibility: 'visible' } : { visibility: 'hidden' }
+    hasPower ? { visibility: 'visible' } : { visibility: 'hidden' }
   )
   return (
     <div style={styles.display}>
-      <span style={countStyle}>
-        {count}
-      </span>
+      <span style={countStyle}>{count}</span>
       <div style={styles.text}>Count</div>
     </div>
   )
@@ -36,20 +34,20 @@ const styles = {
     textAlign: 'right',
     fontSize: '3em',
     padding: '0.18em',
-    borderRadius: '0.25em'
+    borderRadius: '0.25em',
   },
   text: {
     fontSize: '15px',
     color: 'black',
     textTransform: 'uppercase',
     position: 'relative',
-    top: '10px'
-  }
+    top: '10px',
+  },
 }
 
 Display.propTypes = {
   count: PropTypes.number.isRequired,
-  displayOn: PropTypes.bool.isRequired
+  hasPower: PropTypes.bool.isRequired,
 }
 
 export default Display

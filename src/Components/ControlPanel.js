@@ -9,28 +9,28 @@ import PowerState from '../Enums/PowerState'
 import PropTypes from 'prop-types'
 
 /**
- * The Control compontent contains the display and button
- * controls.
+ * The Control compontent contains the display, button,
+ * indicator and power switch subcomponents.
  * 
  * @param {object} style - the injected component styles 
  * @returns component 
  */
-const Control = ({
+const ControlPanel = ({
   style,
   powerState,
   strictMode,
-  displayOn,
   handleStrictButton,
   handleStartButton,
   handlePowerSwitch,
 }) => {
   Object.assign(styles.panel, style)
+  const hasPower = powerState === PowerState.On
   return (
     <div style={styles.panel}>
       <Logo />
       <div style={styles.strip}>
         <Display count={0}
-          displayOn={displayOn} />
+          hasPower={hasPower} />
         <Button
           text={'start'}
           style={styles.startButton}
@@ -43,7 +43,7 @@ const Control = ({
         />
         <Indicator
           style={styles.indicator}
-          hasPower={powerState === PowerState.On}
+          hasPower={hasPower}
           strictMode={strictMode}
         />
       </div>
@@ -78,9 +78,8 @@ const styles = {
   },
 }
 
-Control.propTypes = {
+ControlPanel.propTypes = {
   style: PropTypes.object.isRequired,
-  displayOn: PropTypes.bool.isRequired,
   powerState: PropTypes.string.isRequired,
   strictMode: PropTypes.bool.isRequired,
   handleStrictButton: PropTypes.func.isRequired,
@@ -88,4 +87,4 @@ Control.propTypes = {
   handlePowerSwitch: PropTypes.func.isRequired,
 }
 
-export default Control
+export default ControlPanel

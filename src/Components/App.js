@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Panel from './Panel'
-import Control from './Control'
+import ControlPanel from './ControlPanel'
 import Color from '../Enums/PanelColor'
 import Player from '../Audio/Player'
 import PowerState from '../Enums/PowerState'
@@ -56,21 +56,12 @@ class App extends Component {
       ])
     }
   }
-  /* 
-     Note: if the delay is made is too short not all tones
-     will be played as they interfere with each other.
-
-     While the tones are playing prevent further button 
-     presses (except power switch)
-  */
-
   handlePanelClick = color => {
     if (this.state.powerState === PowerState.On) {
       this.player.play(color)
     }
   }
   render() {
-    const displayOn = this.state.powerState === PowerState.On ? true : false
     return (
       <div style={styles.base}>
         <div style={styles.row}>
@@ -94,8 +85,7 @@ class App extends Component {
           />
         </div>
         <div style={styles.row}>
-          <Control
-            displayOn={displayOn}
+          <ControlPanel
             powerState={this.state.powerState}
             strictMode={this.state.strictMode}
             style={styles.control}

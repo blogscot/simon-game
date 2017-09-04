@@ -35,7 +35,7 @@ const InitialSwitch = styled.div`
 
 const Switch = InitialSwitch.extend`
   animation-name: ${props => (props.on ? turnOn : turnOff)};
-  animation-duration: 1.3s;
+  animation-duration: 0.4s;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
 `
@@ -54,9 +54,13 @@ const PowerSwitch = ({ powerState, onClick }) => {
     <div style={switchStyles}>
       <span>OFF</span>&nbsp;
       <Power onClick={onClick}>
-        {powerState === PowerState.On
-          ? <Switch on />
-          : powerState === PowerState.Off ? <Switch /> : <InitialSwitch />}
+        {powerState === PowerState.On ? (
+          <Switch on />
+        ) : powerState === PowerState.Off ? (
+          <Switch />
+        ) : (
+          <InitialSwitch />
+        )}
       </Power>&nbsp;
       <span>ON</span>
     </div>
