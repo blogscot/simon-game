@@ -20,7 +20,6 @@ class App extends Component {
     this.state = {
       powerState: PowerState.Reset,
       strictMode: false,
-      isPlaying: false,
     }
   }
   handlePowerSwitch = () => {
@@ -32,13 +31,11 @@ class App extends Component {
     }
     this.setState({ powerState, strictMode: false })
 
-    // clear any running timers
-    if (this.state.isPlaying) {
-      this.toneTimers.forEach(timer => clearTimeout(timer))
-    }
+    // stop any playing sounds
+    this.player.stop()
   }
   handleStrictButton = () => {
-    if (!this.state.isPlaying) {
+    if (!this.player.isPlaying) {
       this.setState({
         strictMode: !this.state.strictMode,
       })
@@ -46,16 +43,16 @@ class App extends Component {
   }
   /* FIXME */
   handleStartButton = () => {
-    if (this.state.powerState === PowerState.On && !this.state.isPlaying) {
-      this.playToneSequence([
-        this.greenPanelTone,
-        this.greenPanelTone,
-        this.redPanelTone,
-        this.redPanelTone,
-        this.bluePanelTone,
-        this.bluePanelTone,
-        this.yellowPanelTone,
-        this.yellowPanelTone,
+    if (this.state.powerState === PowerState.On && !this.player.isPlaying) {
+      this.player.playSequence([
+        Color.Green,
+        Color.Green,
+        Color.Red,
+        Color.Red,
+        Color.Blue,
+        Color.Blue,
+        Color.Yellow,
+        Color.Yellow,
       ])
     }
   }
@@ -66,16 +63,11 @@ class App extends Component {
      While the tones are playing prevent further button 
      presses (except power switch)
   */
-  playToneSequence = (tones, delay = 600) => {
-    this.setState({ isPlaying: true })
-    this.toneTimers = tones.map((tone, index) => {
-      return setTimeout(() => tone.play(), delay * index)
-    })
-    // Clear isPlaying when sequence finishes
-    setTimeout(() => this.setState({ isPlaying: false }), delay * tones.length)
-  }
+
   handlePanelClick = color => {
-    this.player.play(color)
+    if (this.state.powerState === PowerState.On) {
+      this.player.play(color)
+    }
   }
   render() {
     const displayOn = this.state.powerState === PowerState.On ? true : false

@@ -13,10 +13,28 @@ class Player {
       [Color.Yellow]: new Audio(Sound3),
       [Color.Green]: new Audio(Sound4),
     }
+    this.isPlaying = false
   }
   play = sound => {
-    this.Tones[sound].play()
+    // Don't play when a sequence is playing
+    if (!this.isPlaying) {
+      this.Tones[sound].play()
+    }
   }
+  stop = () => {
+    if (this.isPlaying) {
+      this.toneTimers.forEach(timer => clearTimeout(timer))
+    }
+  }
+  playSequence = (tones, delay = 600) => {
+    this.isPlaying = true
+    this.toneTimers = tones.map((tone, index) => {
+      return setTimeout(() => this.Tones[tone].play(), delay * index)
+    })
+    // Clear isPlaying when sequence finishes
+    setTimeout(() => (this.isPlaying = false), delay * tones.length)
+  }
+  isPlaying = () => this.isPlaying
 }
 
 export default Player
