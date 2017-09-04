@@ -1,5 +1,5 @@
 import React from 'react'
-import PowerState from '../Libraries/PowerState'
+import PowerState from '../Enums/PowerState'
 
 import styled, { keyframes, div } from 'styled-components'
 import PropTypes from 'prop-types'

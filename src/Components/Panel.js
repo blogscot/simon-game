@@ -7,18 +7,21 @@ import PropTypes from 'prop-types'
  * @param {object} style - the component style 
  * @returns component
  */
-const Panel = ({ style }) => {
+
+const Panel = ({ style, onClick }) => {
   Object.assign(panelStyles, style)
-  return <div style={panelStyles} />
+  return <div style={panelStyles}
+    onClick={onClick} />
 }
 
 const panelStyles = {
   width: '18em',
-  height: '18em'
+  height: '18em',
 }
 
 Panel.propTypes = {
-  style: PropTypes.object.isRequired
+  style: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default Panel

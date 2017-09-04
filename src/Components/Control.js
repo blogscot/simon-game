@@ -4,7 +4,7 @@ import Display from './Display'
 import Button from './Button'
 import Indicator from './Indicator'
 import PowerSwitch from './PowerSwitch'
-import PowerState from '../Libraries/PowerState'
+import PowerState from '../Enums/PowerState'
 
 import Sound1 from '../Audio/Sound1.mp3'
 import Sound2 from '../Audio/Sound2.mp3'
@@ -68,7 +68,7 @@ class Control extends React.Component {
   }
   /* 
      Note: if the delay is made is too short not all tones
-     will be played, as they overlap with each other.
+     will be played as they interfere with each other.
 
      While the tones are playing prevent further button 
      presses (except power switch)

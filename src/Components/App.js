@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Panel from './Panel'
 import Control from './Control'
+import Color from '../Enums/PanelColor'
 
 /**
  * The App component encapsulates the Simon game's
@@ -10,16 +11,31 @@ import Control from './Control'
  * @extends {Component}
  */
 class App extends Component {
+  handlePanelClick = color => {
+    console.log(`${color} panel clicked`)
+  }
   render() {
     return (
       <div style={styles.base}>
         <div style={styles.row}>
-          <Panel style={styles.topLeftPanel} />
-          <Panel style={styles.topRightPanel} />
+          <Panel
+            style={styles.topLeftPanel}
+            onClick={() => this.handlePanelClick(Color.Green)}
+          />
+          <Panel
+            style={styles.topRightPanel}
+            onClick={() => this.handlePanelClick(Color.Red)}
+          />
         </div>
         <div style={styles.row}>
-          <Panel style={styles.bottomLeftPanel} />
-          <Panel style={styles.bottomRightPanel} />
+          <Panel
+            style={styles.bottomLeftPanel}
+            onClick={() => this.handlePanelClick(Color.Yellow)}
+          />
+          <Panel
+            style={styles.bottomRightPanel}
+            onClick={() => this.handlePanelClick(Color.Blue)}
+          />
         </div>
         <div style={styles.row}>
           <Control style={styles.control} />
