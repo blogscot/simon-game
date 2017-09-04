@@ -1,7 +1,7 @@
-import Sound1 from '../Audio/Sound1.mp3'
-import Sound2 from '../Audio/Sound2.mp3'
-import Sound3 from '../Audio/Sound3.mp3'
-import Sound4 from '../Audio/Sound4.mp3'
+import Sound1 from './Sound1.mp3'
+import Sound2 from './Sound2.mp3'
+import Sound3 from './Sound3.mp3'
+import Sound4 from './Sound4.mp3'
 
 import Color from '../Enums/PanelColor'
 
