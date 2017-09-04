@@ -6,11 +6,6 @@ import Indicator from './Indicator'
 import PowerSwitch from './PowerSwitch'
 import PowerState from '../Enums/PowerState'
 
-import Sound1 from '../Audio/Sound1.mp3'
-import Sound2 from '../Audio/Sound2.mp3'
-import Sound3 from '../Audio/Sound3.mp3'
-import Sound4 from '../Audio/Sound4.mp3'
-
 import PropTypes from 'prop-types'
 
 /**
@@ -26,10 +21,7 @@ class Control extends React.Component {
     strictMode: false,
     isPlaying: false,
   }
-  redPanelTone = new Audio(Sound1)
-  bluePanelTone = new Audio(Sound2)
-  yellowPanelTone = new Audio(Sound3)
-  greenPanelTone = new Audio(Sound4)
+
   handlePowerSwitch = () => {
     let powerState
     if (this.state.powerState !== PowerState.On) {

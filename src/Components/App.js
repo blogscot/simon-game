@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Panel from './Panel'
 import Control from './Control'
 import Color from '../Enums/PanelColor'
+import Player from '../Audio/Player'
 
 /**
  * The App component encapsulates the Simon game's
@@ -11,8 +12,12 @@ import Color from '../Enums/PanelColor'
  * @extends {Component}
  */
 class App extends Component {
+  constructor() {
+    super()
+    this.player = new Player()
+  }
   handlePanelClick = color => {
-    console.log(`${color} panel clicked`)
+    this.player.play(color)
   }
   render() {
     return (
