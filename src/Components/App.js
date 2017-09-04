@@ -3,6 +3,7 @@ import Panel from './Panel'
 import Control from './Control'
 import Color from '../Enums/PanelColor'
 import Player from '../Audio/Player'
+import PowerState from '../Enums/PowerState'
 
 /**
  * The App component encapsulates the Simon game's
@@ -15,11 +16,69 @@ class App extends Component {
   constructor() {
     super()
     this.player = new Player()
+
+    this.state = {
+      powerState: PowerState.Reset,
+      strictMode: false,
+      isPlaying: false,
+    }
+  }
+  handlePowerSwitch = () => {
+    let powerState
+    if (this.state.powerState !== PowerState.On) {
+      powerState = PowerState.On
+    } else {
+      powerState = PowerState.Off
+    }
+    this.setState({ powerState, strictMode: false })
+
+    // clear any running timers
+    if (this.state.isPlaying) {
+      this.toneTimers.forEach(timer => clearTimeout(timer))
+    }
+  }
+  handleStrictButton = () => {
+    if (!this.state.isPlaying) {
+      this.setState({
+        strictMode: !this.state.strictMode,
+      })
+    }
+  }
+  /* FIXME */
+  handleStartButton = () => {
+    if (this.state.powerState === PowerState.On && !this.state.isPlaying) {
+      this.playToneSequence([
+        this.greenPanelTone,
+        this.greenPanelTone,
+        this.redPanelTone,
+        this.redPanelTone,
+        this.bluePanelTone,
+        this.bluePanelTone,
+        this.yellowPanelTone,
+        this.yellowPanelTone,
+      ])
+    }
+  }
+  /* 
+     Note: if the delay is made is too short not all tones
+     will be played as they interfere with each other.
+
+     While the tones are playing prevent further button 
+     presses (except power switch)
+  */
+  playToneSequence = (tones, delay = 600) => {
+    this.setState({ isPlaying: true })
+    this.toneTimers = tones.map((tone, index) => {
+      return setTimeout(() => tone.play(), delay * index)
+    })
+    // Clear isPlaying when sequence finishes
+    setTimeout(() => this.setState({ isPlaying: false }), delay * tones.length)
   }
   handlePanelClick = color => {
     this.player.play(color)
   }
   render() {
+    const displayOn = this.state.powerState === PowerState.On ? true : false
     return (
       <div style={styles.base}>
         <div style={styles.row}>
@@ -43,7 +102,15 @@ class App extends Component {
           />
         </div>
         <div style={styles.row}>
-          <Control style={styles.control} />
+          <Control
+            displayOn={displayOn}
+            powerState={this.state.powerState}
+            strictMode={this.state.strictMode}
+            style={styles.control}
+            handleStrictButton={this.handleStrictButton}
+            handleStartButton={this.handleStartButton}
+            handlePowerSwitch={this.handlePowerSwitch}
+          />
         </div>
       </div>
     )

@@ -9,103 +9,48 @@ import PowerState from '../Enums/PowerState'
 import PropTypes from 'prop-types'
 
 /**
- * The Control compentent contains the display and button
+ * The Control compontent contains the display and button
  * controls.
  * 
  * @param {object} style - the injected component styles 
  * @returns component 
  */
-class Control extends React.Component {
-  state = {
-    powerState: PowerState.Reset,
-    strictMode: false,
-    isPlaying: false,
-  }
-
-  handlePowerSwitch = () => {
-    let powerState
-    if (this.state.powerState !== PowerState.On) {
-      powerState = PowerState.On
-    } else {
-      powerState = PowerState.Off
-    }
-    this.setState({ powerState, strictMode: false })
-
-    // clear any running timers
-    if (this.state.isPlaying) {
-      this.toneTimers.forEach(timer => clearTimeout(timer))
-    }
-  }
-  handleStrictButton = () => {
-    if (!this.state.isPlaying) {
-      this.setState({
-        strictMode: !this.state.strictMode,
-      })
-    }
-  }
-  /* FIXME */
-  handleStartButton = () => {
-    if (this.state.powerState === PowerState.On && !this.state.isPlaying) {
-      this.playToneSequence([
-        this.greenPanelTone,
-        this.greenPanelTone,
-        this.redPanelTone,
-        this.redPanelTone,
-        this.bluePanelTone,
-        this.bluePanelTone,
-        this.yellowPanelTone,
-        this.yellowPanelTone,
-      ])
-    }
-  }
-  /* 
-     Note: if the delay is made is too short not all tones
-     will be played as they interfere with each other.
-
-     While the tones are playing prevent further button 
-     presses (except power switch)
-  */
-  playToneSequence = (tones, delay = 600) => {
-    this.setState({ isPlaying: true })
-    this.toneTimers = tones.map((tone, index) => {
-      return setTimeout(() => tone.play(), delay * index)
-    })
-    // Clear isPlaying when sequence finishes
-    setTimeout(() => this.setState({ isPlaying: false }), delay * tones.length)
-  }
-  render() {
-    const { style } = this.props
-    const displayOn = this.state.powerState === PowerState.On ? true : false
-    Object.assign(styles.panel, style)
-    return (
-      <div style={styles.panel}>
-        <Logo />
-        <div style={styles.strip}>
-          <Display count={0}
-            displayOn={displayOn} />
-          <Button
-            text={'start'}
-            style={styles.startButton}
-            onClick={this.handleStartButton}
-          />
-          <Button
-            text={'strict'}
-            style={styles.strictButton}
-            onClick={this.handleStrictButton}
-          />
-          <Indicator
-            style={styles.indicator}
-            hasPower={this.state.powerState === PowerState.On}
-            strictMode={this.state.strictMode}
-          />
-        </div>
-        <PowerSwitch
-          powerState={this.state.powerState}
-          onClick={this.handlePowerSwitch}
+const Control = ({
+  style,
+  powerState,
+  strictMode,
+  displayOn,
+  handleStrictButton,
+  handleStartButton,
+  handlePowerSwitch,
+}) => {
+  Object.assign(styles.panel, style)
+  return (
+    <div style={styles.panel}>
+      <Logo />
+      <div style={styles.strip}>
+        <Display count={0}
+          displayOn={displayOn} />
+        <Button
+          text={'start'}
+          style={styles.startButton}
+          onClick={handleStartButton}
+        />
+        <Button
+          text={'strict'}
+          style={styles.strictButton}
+          onClick={handleStrictButton}
+        />
+        <Indicator
+          style={styles.indicator}
+          hasPower={powerState === PowerState.On}
+          strictMode={strictMode}
         />
       </div>
-    )
-  }
+      <PowerSwitch powerState={powerState}
+        onClick={handlePowerSwitch} />
+    </div>
+  )
 }
 
 const styles = {
@@ -135,6 +80,12 @@ const styles = {
 
 Control.propTypes = {
   style: PropTypes.object.isRequired,
+  displayOn: PropTypes.bool.isRequired,
+  powerState: PropTypes.string.isRequired,
+  strictMode: PropTypes.bool.isRequired,
+  handleStrictButton: PropTypes.func.isRequired,
+  handleStartButton: PropTypes.func.isRequired,
+  handlePowerSwitch: PropTypes.func.isRequired,
 }
 
 export default Control
