@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Panel from './Panel'
 import ControlPanel from './ControlPanel'
-import Color from '../Enums/PanelColor'
+import PanelColor from '../Enums/PanelColor'
 import Player from '../Audio/Player'
 import PowerState from '../Enums/PowerState'
 
@@ -45,14 +45,14 @@ class App extends Component {
   handleStartButton = () => {
     if (this.state.powerState === PowerState.On && !this.player.isPlaying) {
       this.player.playSequence([
-        Color.Green,
-        Color.Green,
-        Color.Red,
-        Color.Red,
-        Color.Blue,
-        Color.Blue,
-        Color.Yellow,
-        Color.Yellow,
+        PanelColor.Green,
+        PanelColor.Green,
+        PanelColor.Red,
+        PanelColor.Red,
+        PanelColor.Blue,
+        PanelColor.Blue,
+        PanelColor.Yellow,
+        PanelColor.Yellow,
       ])
     }
   }
@@ -67,21 +67,21 @@ class App extends Component {
         <div style={styles.row}>
           <Panel
             style={styles.topLeftPanel}
-            onClick={() => this.handlePanelClick(Color.Green)}
+            onClick={() => this.handlePanelClick(PanelColor.Green)}
           />
           <Panel
             style={styles.topRightPanel}
-            onClick={() => this.handlePanelClick(Color.Red)}
+            onClick={() => this.handlePanelClick(PanelColor.Red)}
           />
         </div>
         <div style={styles.row}>
           <Panel
             style={styles.bottomLeftPanel}
-            onClick={() => this.handlePanelClick(Color.Yellow)}
+            onClick={() => this.handlePanelClick(PanelColor.Yellow)}
           />
           <Panel
             style={styles.bottomRightPanel}
-            onClick={() => this.handlePanelClick(Color.Blue)}
+            onClick={() => this.handlePanelClick(PanelColor.Blue)}
           />
         </div>
         <div style={styles.row}>
@@ -99,6 +99,11 @@ class App extends Component {
   }
 }
 
+const basePanel = {
+  borderStyle: 'solid',
+  borderColor: 'black',
+}
+
 const styles = {
   base: {
     marginTop: '20px',
@@ -108,23 +113,25 @@ const styles = {
     justifyContent: 'center',
   },
   topLeftPanel: {
+    ...basePanel,
     borderRadius: '300px 0 0 0',
     background: 'green',
     borderWidth: '16px 8px 8px 16px',
-    borderStyle: 'solid',
-    borderColor: 'black',
   },
   topRightPanel: {
+    ...basePanel,
     borderRadius: '0 300px 0 0',
     background: '#a50303',
     borderWidth: '16px 16px 8px 8px',
   },
   bottomRightPanel: {
+    ...basePanel,
     borderRadius: '0 0 300px 0',
     background: '#5b75bf',
     borderWidth: '8px 16px 16px 8px',
   },
   bottomLeftPanel: {
+    ...basePanel,
     borderRadius: '0 0 0 300px',
     background: '#c3c32f',
     borderWidth: '8px 8px 16px 16px',

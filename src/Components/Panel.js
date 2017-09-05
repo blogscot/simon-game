@@ -9,8 +9,8 @@ import PropTypes from 'prop-types'
  */
 
 const Panel = ({ style, onClick }) => {
-  Object.assign(panelStyles, style)
-  return <div style={panelStyles}
+  let styles = Object.assign({}, panelStyles, style)
+  return <div style={styles}
     onClick={onClick} />
 }
 
