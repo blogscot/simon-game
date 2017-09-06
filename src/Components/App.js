@@ -26,7 +26,7 @@ class App extends Component {
     }
 
     this.state = {
-      powerState: PowerState.Reset,
+      powerState: PowerState.On, // FIXME: Development setting only
       strictMode: false,
       panelPressed: panelPressed,
     }
@@ -52,13 +52,13 @@ class App extends Component {
   handleStartButton = () => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
       this.playSequence([
-        PanelColor.Green,
-        PanelColor.Green,
         PanelColor.Red,
+        PanelColor.Green,
+        PanelColor.Blue,
         PanelColor.Red,
-        PanelColor.Blue,
-        PanelColor.Blue,
         PanelColor.Yellow,
+        PanelColor.Blue,
+        PanelColor.Green,
         PanelColor.Yellow,
       ])
     }
@@ -66,17 +66,19 @@ class App extends Component {
   handlePanelClick = color => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
       this.player.play(color)
-
-      // light up color panel for a short time
-      let panelPressed = { ...this.state.panelPressed }
-      panelPressed[color] = true
-      this.setState({ panelPressed })
-
-      setTimeout(() => {
-        panelPressed[color] = false
-        this.setState({ panelPressed })
-      }, 300)
+      this.lightPanel(color)
     }
+  }
+  lightPanel(color, duration = 300) {
+    // light up color panel for a short time
+    let panelPressed = { ...this.state.panelPressed }
+    panelPressed[color] = true
+    this.setState({ panelPressed })
+
+    setTimeout(() => {
+      panelPressed[color] = false
+      this.setState({ panelPressed })
+    }, duration)
   }
   /* 
      Note: if the delay is made is too short not all tones
@@ -85,13 +87,14 @@ class App extends Component {
      While the tones are playing prevent further button 
      presses (except power switch)
   */
-  playSequence = (tones, delay = 600) => {
+  playSequence = (colors, delay = 600) => {
     this.isPlaying = true
-    this.toneTimers = tones.map((tone, index) => {
-      return setTimeout(() => this.player.play(tone), delay * index)
+    this.toneTimers = colors.map((color, index) => {
+      setTimeout(() => this.lightPanel(color, 400), delay * index)
+      return setTimeout(() => this.player.play(color), delay * index)
     })
     // Clear isPlaying when sequence finishes
-    setTimeout(() => (this.isPlaying = false), delay * tones.length)
+    setTimeout(() => (this.isPlaying = false), delay * colors.length)
   }
   stopPlaying = () => {
     if (this.isPlaying) {
