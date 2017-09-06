@@ -31,16 +31,10 @@ const ControlPanel = ({
       <div style={styles.strip}>
         <Display count={0}
           hasPower={hasPower} />
-        <Button
-          text={'start'}
-          style={styles.startButton}
-          onClick={handleStartButton}
-        />
-        <Button
-          text={'strict'}
-          style={styles.strictButton}
-          onClick={handleStrictButton}
-        />
+        <Button text={'start'}
+          onClick={handleStartButton} />
+        <Button text={'strict'}
+          onClick={handleStrictButton} />
         <Indicator
           style={styles.indicator}
           hasPower={hasPower}
@@ -64,12 +58,6 @@ const styles = {
     justifyContent: 'space-around',
     width: '300px',
     marginLeft: '30px',
-  },
-  startButton: {
-    background: 'red',
-  },
-  strictButton: {
-    background: 'yellow',
   },
   indicator: {
     position: 'relative',

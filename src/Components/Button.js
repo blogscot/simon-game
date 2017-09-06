@@ -1,5 +1,5 @@
 import React from 'react'
-
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 /**
@@ -10,45 +10,50 @@ import PropTypes from 'prop-types'
  * @param {function} onClick - the button click handler
  * @returns component
  */
-const Button = ({ text, style, onClick }) => {
-  Object.assign(styles.button, style)
+
+const Button = ({ text, onClick }) => {
   return (
-    <div style={styles.base}>
-      <div style={styles.button}
-        onClick={onClick} />
-      <div style={styles.text}>
-        {text}
-      </div>
-    </div>
+    <Wrapper>
+      {text === 'strict' ? (
+        <GameButton strict
+          onClick={onClick} />
+      ) : (
+        <GameButton onClick={onClick} />
+      )}
+      <Label>{text}</Label>
+    </Wrapper>
   )
 }
 
-const styles = {
-  base: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  button: {
-    width: '24px',
-    height: '24px',
-    borderRadius: '24px',
-    border: '3px solid black'
-  },
-  text: {
-    fontSize: '15px',
-    color: 'black',
-    textTransform: 'uppercase',
-    position: 'relative',
-    top: '23px'
+const GameButton = styled.div`
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  border: 3px solid black;
+  &:hover {
+    cursor: pointer;
   }
-}
+  background: ${props => (props.strict ? 'yellow' : 'red')};
+`
+
+const Label = styled.div`
+  font-size: 15px;
+  color: black;
+  text-transform: uppercase;
+  position: relative;
+  top: 23px;
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+`
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
-  style: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 }
 
 export default Button
