@@ -17,7 +17,7 @@ class App extends Component {
     super()
     this.player = new Player()
 
-    let lightButton = {
+    let panelPressed = {
       [PanelColor.Red]: false,
       [PanelColor.Blue]: false,
       [PanelColor.Yellow]: false,
@@ -27,7 +27,7 @@ class App extends Component {
     this.state = {
       powerState: PowerState.Reset,
       strictMode: false,
-      lightButton: lightButton,
+      panelPressed: panelPressed,
     }
   }
   handlePowerSwitch = () => {
@@ -69,40 +69,41 @@ class App extends Component {
       this.player.play(color)
 
       // light up color panel for a short time
-      let lightButton = { ...this.state.lightButton }
-      lightButton[color] = true
-      this.setState({ lightButton })
+      let panelPressed = { ...this.state.panelPressed }
+      panelPressed[color] = true
+      this.setState({ panelPressed })
 
       setTimeout(() => {
-        lightButton[color] = false
-        this.setState({ lightButton })
+        panelPressed[color] = false
+        this.setState({ panelPressed })
       }, 300)
     }
   }
   render() {
+    const { panelPressed } = this.state
     return (
       <div style={styles.base}>
         <div style={styles.row}>
           <Panel
             style={styles.topLeftPanel}
-            lighten={this.state.lightButton[PanelColor.Green]}
+            lighten={panelPressed[PanelColor.Green]}
             onClick={() => this.handlePanelClick(PanelColor.Green)}
           />
           <Panel
             style={styles.topRightPanel}
-            lighten={this.state.lightButton[PanelColor.Red]}
+            lighten={panelPressed[PanelColor.Red]}
             onClick={() => this.handlePanelClick(PanelColor.Red)}
           />
         </div>
         <div style={styles.row}>
           <Panel
             style={styles.bottomLeftPanel}
-            lighten={this.state.lightButton[PanelColor.Yellow]}
+            lighten={panelPressed[PanelColor.Yellow]}
             onClick={() => this.handlePanelClick(PanelColor.Yellow)}
           />
           <Panel
             style={styles.bottomRightPanel}
-            lighten={this.state.lightButton[PanelColor.Blue]}
+            lighten={panelPressed[PanelColor.Blue]}
             onClick={() => this.handlePanelClick(PanelColor.Blue)}
           />
         </div>

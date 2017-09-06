@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Color from 'color'
 
 /**
- * Panel displays a coloured panel, red, blue, yellow or blue,
+ * Panel displays a coloured panel, red, blue, yellow or green,
  * which brightens when clicked by the user.
  * 
  * @param {object} style - the component style
