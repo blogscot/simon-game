@@ -32,22 +32,18 @@ const PowerSwitch = ({ powerState, onClick }) => {
 }
 
 const turnOn = keyframes`
-{
   0%   {left:0px; top:0px;}
-  100% {left:20px; top:0px;}
- }
+  100% {left:25px; top:0px;}
 `
 const turnOff = keyframes`
-{
-  0%   {left:20px; top:0px;}
+  0%   {left:25px; top:0px;}
   100% {left:0px; top:0px;}
- }
 `
 
 const Power = styled.div`
   padding: 0px;
   background-color: black;
-  width: 45px;
+  width: 50px;
 `
 
 const InitialSwitch = styled.div`
@@ -55,6 +51,7 @@ const InitialSwitch = styled.div`
   height: 25px;
   position: relative;
   background-color: red;
+  border-radius: 4px;
   &:hover {
     cursor: pointer;
   }

@@ -61,7 +61,7 @@ const Label = styled.div`
 
 Display.propTypes = {
   count: PropTypes.number.isRequired,
-  blink: PropTypes.bool.isRequired,
+  blink: PropTypes.bool,
   hasPower: PropTypes.bool.isRequired,
 }
 
