@@ -16,6 +16,7 @@ class App extends Component {
   constructor() {
     super()
     this.player = new Player()
+    this.isPlaying = false
 
     let panelPressed = {
       [PanelColor.Red]: false,
@@ -38,12 +39,10 @@ class App extends Component {
       powerState = PowerState.Off
     }
     this.setState({ powerState, strictMode: false })
-
-    // stop any playing sounds
-    this.player.stop()
+    this.stopPlaying()
   }
   handleStrictButton = () => {
-    if (!this.player.isPlaying) {
+    if (!this.isPlaying) {
       this.setState({
         strictMode: !this.state.strictMode,
       })
@@ -51,8 +50,8 @@ class App extends Component {
   }
   /* FIXME */
   handleStartButton = () => {
-    if (this.state.powerState === PowerState.On && !this.player.isPlaying) {
-      this.player.playSequence([
+    if (this.state.powerState === PowerState.On && !this.isPlaying) {
+      this.playSequence([
         PanelColor.Green,
         PanelColor.Green,
         PanelColor.Red,
@@ -65,7 +64,7 @@ class App extends Component {
     }
   }
   handlePanelClick = color => {
-    if (this.state.powerState === PowerState.On) {
+    if (this.state.powerState === PowerState.On && !this.isPlaying) {
       this.player.play(color)
 
       // light up color panel for a short time
@@ -77,6 +76,26 @@ class App extends Component {
         panelPressed[color] = false
         this.setState({ panelPressed })
       }, 300)
+    }
+  }
+  /* 
+     Note: if the delay is made is too short not all tones
+     will be played as they interfere with each other.
+
+     While the tones are playing prevent further button 
+     presses (except power switch)
+  */
+  playSequence = (tones, delay = 600) => {
+    this.isPlaying = true
+    this.toneTimers = tones.map((tone, index) => {
+      return setTimeout(() => this.player.play(tone), delay * index)
+    })
+    // Clear isPlaying when sequence finishes
+    setTimeout(() => (this.isPlaying = false), delay * tones.length)
+  }
+  stopPlaying = () => {
+    if (this.isPlaying) {
+      this.toneTimers.forEach(timer => clearTimeout(timer))
     }
   }
   render() {
