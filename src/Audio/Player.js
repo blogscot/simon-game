@@ -5,6 +5,12 @@ import Sound4 from './Sound4.mp3'
 
 import Color from '../Enums/PanelColor'
 
+/**
+ * Player plays audio sounds for the four game panels
+ * 
+ * @export class
+ * @class Player
+ */
 export default class Player {
   constructor() {
     this.Tones = {

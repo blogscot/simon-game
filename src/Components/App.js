@@ -7,7 +7,7 @@ import Player from '../Audio/Player'
 
 /**
  * The App component encapsulates the Simon game's
- * subcomponents.
+ * Panel and ControlPanel subcomponents.
  * 
  * @class App
  * @extends {Component}

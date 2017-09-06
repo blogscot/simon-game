@@ -12,7 +12,12 @@ import PropTypes from 'prop-types'
  * The Control compontent contains the display, button,
  * indicator and power switch subcomponents.
  * 
- * @param {object} style - the injected component styles 
+ * @param {object} style - the injected component styles
+ * @param {string} powerState - the current power state
+ * @param {boolean} strictMode - is the game in strict mode?
+ * @param {function} handleStrictButton - click handler 
+ * @param {function} handleStartButton - click handler 
+ * @param {function} handlePowerSwitch - click handler 
  * @returns component 
  */
 const ControlPanel = ({
