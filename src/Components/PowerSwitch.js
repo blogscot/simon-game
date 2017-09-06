@@ -16,13 +16,14 @@ const PowerSwitch = ({ powerState, onClick }) => {
   return (
     <Wrapper>
       <span>OFF</span>&nbsp;
-      <Power onClick={onClick}>
+      <Power>
         {powerState === PowerState.On ? (
-          <Switch on />
+          <Switch on
+            onClick={onClick} />
         ) : powerState === PowerState.Off ? (
-          <Switch />
+          <Switch onClick={onClick} />
         ) : (
-          <InitialSwitch />
+          <InitialSwitch onClick={onClick} />
         )}
       </Power>&nbsp;
       <span>ON</span>
