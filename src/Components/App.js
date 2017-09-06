@@ -90,8 +90,10 @@ class App extends Component {
   playSequence = (colors, delay = 600) => {
     this.isPlaying = true
     this.toneTimers = colors.map((color, index) => {
-      setTimeout(() => this.lightPanel(color, 400), delay * index)
-      return setTimeout(() => this.player.play(color), delay * index)
+      return setTimeout(() => {
+        this.lightPanel(color, 400)
+        this.player.play(color)
+      }, delay * index)
     })
     // Clear isPlaying when sequence finishes
     setTimeout(() => (this.isPlaying = false), delay * colors.length)
