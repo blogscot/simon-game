@@ -17,6 +17,8 @@ class App extends Component {
     super()
     this.player = new Player()
     this.isPlaying = false
+    this.expectedColorSequence = null
+    this.playerColorSequence = []
     this.gameColorSequence = this.generateGameColorSequence()
 
     let panelPressed = {
@@ -70,17 +72,18 @@ class App extends Component {
     let { count } = this.state
     // if game is already running restart!
     if (count > 0) {
+      // reset the game state
+      this.expectedColorSequence = null
+      this.playerColorSequence = []
       this.gameColorSequence = this.generateGameColorSequence()
       this.stopPlaying()
       count = 0
       this.setState({ count })
     }
     await this.blinkDisplay()
-    this.setState({ count: count + 1 })
-    this.mainGameLoop()
-  }
-  mainGameLoop = () => {
-    this.playGameSequence()
+    count += 1
+    this.setState({ count })
+    this.playGameSequence(count)
   }
   handleStrictButton = () => {
     if (!this.isPlaying) {
@@ -93,12 +96,38 @@ class App extends Component {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
       this.player.play(color)
       this.lightPanel(color)
+
+      // check player sequence
+      this.checkPlayerSequence(color)
     }
   }
-  playGameSequence = () => {
+  checkPlayerSequence = color => {
+    this.playerColorSequence.push(color)
+    const { count } = this.state
+    if (this.playerColorSequence.length === count) {
+      if (this.isPlayerSequenceValid()) {
+        // Pause before showing next sequence
+        setTimeout(() => {
+          let count = this.state.count + 1
+          this.setState({ count })
+          this.playerColorSequence = []
+          this.playGameSequence(count)
+        }, 1000)
+      } else {
+        // handle player failure
+        console.log('You pressed the wrong color!')
+      }
+    }
+  }
+  isPlayerSequenceValid = () => {
+    const player = this.playerColorSequence
+    const expected = this.expectedColorSequence
+    return player.reduce((acc, item, index) => item === expected[index], true)
+  }
+  playGameSequence = count => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
-      const { count } = this.state
       const currentSequence = this.gameColorSequence.slice(0, count)
+      this.expectedColorSequence = currentSequence
       this.playSequence(currentSequence)
     }
   }
