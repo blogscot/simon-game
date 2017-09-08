@@ -12,11 +12,11 @@ import PropTypes from 'prop-types'
  * @param {boolean} displayOn - is the display currently enabled?
  * @returns component
  */
-const Display = ({ count, blink, hasPower }) => {
+const Display = ({ count, blinking, hasPower }) => {
   const text = count ? count : '--'
   return (
     <Container>
-      {hasPower ? blink ? (
+      {hasPower ? blinking ? (
         <BlinkingInfo show>{text}</BlinkingInfo>
       ) : (
         <Info show>{text}</Info>
@@ -49,7 +49,7 @@ const blinking = keyframes`
   50% { opacity: 0; }
 `
 
-const BlinkingInfo = Info.extend`animation: ${blinking} 1s linear infinite;`
+const BlinkingInfo = Info.extend`animation: ${blinking} 0.8s linear infinite;`
 
 const Label = styled.div`
   font-size: 15px;
@@ -61,7 +61,7 @@ const Label = styled.div`
 
 Display.propTypes = {
   count: PropTypes.number.isRequired,
-  blink: PropTypes.bool,
+  blinking: PropTypes.bool,
   hasPower: PropTypes.bool.isRequired,
 }
 

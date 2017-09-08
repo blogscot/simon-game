@@ -29,6 +29,10 @@ class App extends Component {
       powerState: PowerState.On, // FIXME: Development setting only
       strictMode: false,
       panelPressed: panelPressed,
+      displayConfig: {
+        count: 0,
+        blinking: false,
+      },
     }
   }
   handlePowerSwitch = () => {
@@ -48,8 +52,8 @@ class App extends Component {
       })
     }
   }
-  /* FIXME */
-  handleStartButton = () => {
+  // REMOVE ME
+  playTestSequence = () => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
       this.playSequence([
         PanelColor.Red,
@@ -62,6 +66,12 @@ class App extends Component {
         PanelColor.Yellow,
       ])
     }
+  }
+  handleStartButton = async () => {
+    await this.blinkDisplay()
+    let displayConfig = { count: 1 }
+    this.setState({ displayConfig })
+    this.playTestSequence()
   }
   handlePanelClick = color => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
@@ -79,6 +89,20 @@ class App extends Component {
       panelPressed[color] = false
       this.setState({ panelPressed })
     }, duration)
+  }
+  blinkDisplay = async (duration = 2400) => {
+    const promise = new Promise(resolve => {
+      let displayConfig = { ...this.state.displayConfig }
+      displayConfig.blinking = true
+      this.setState({ displayConfig })
+
+      setTimeout(() => {
+        displayConfig.blinking = false
+        this.setState({ displayConfig })
+        resolve()
+      }, duration)
+    })
+    return promise
   }
   /* 
      Note: if the delay is made is too short not all tones
@@ -135,6 +159,7 @@ class App extends Component {
           <ControlPanel
             powerState={this.state.powerState}
             strictMode={this.state.strictMode}
+            displayConfig={this.state.displayConfig}
             style={styles.control}
             handleStrictButton={this.handleStrictButton}
             handleStartButton={this.handleStartButton}
