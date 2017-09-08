@@ -17,6 +17,7 @@ class App extends Component {
     super()
     this.player = new Player()
     this.isPlaying = false
+    this.gameColorSequence = this.generateGameColorSequence()
 
     let panelPressed = {
       [PanelColor.Red]: false,
@@ -35,6 +36,21 @@ class App extends Component {
       },
     }
   }
+  generateGameColorSequence = () => {
+    const colors = [
+      PanelColor.Red,
+      PanelColor.Blue,
+      PanelColor.Yellow,
+      PanelColor.Green,
+    ]
+    let randomNumber
+    let sequence = []
+    for (let index = 0; index < 20; index++) {
+      randomNumber = Math.floor(Math.random() * 4)
+      sequence.push(colors[randomNumber])
+    }
+    return sequence
+  }
   handlePowerSwitch = () => {
     let powerState
     if (this.state.powerState !== PowerState.On) {
@@ -42,7 +58,11 @@ class App extends Component {
     } else {
       powerState = PowerState.Off
     }
-    this.setState({ powerState, strictMode: false })
+    this.setState({
+      powerState,
+      strictMode: false,
+      displayConfig: { count: 0, blinking: false },
+    })
     this.stopPlaying()
   }
   handleStrictButton = () => {
@@ -52,26 +72,19 @@ class App extends Component {
       })
     }
   }
-  // REMOVE ME
-  playTestSequence = () => {
+  playGameSequence = () => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
-      this.playSequence([
-        PanelColor.Red,
-        PanelColor.Green,
-        PanelColor.Blue,
-        PanelColor.Red,
-        PanelColor.Yellow,
-        PanelColor.Blue,
-        PanelColor.Green,
-        PanelColor.Yellow,
-      ])
+      const { count } = this.state.displayConfig
+      const currentSequence = this.gameColorSequence.slice(0, count)
+      this.playSequence(currentSequence)
     }
   }
   handleStartButton = async () => {
     await this.blinkDisplay()
-    let displayConfig = { count: 1 }
+    const count = this.state.displayConfig.count + 1
+    const displayConfig = { count }
     this.setState({ displayConfig })
-    this.playTestSequence()
+    this.playGameSequence()
   }
   handlePanelClick = color => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
@@ -111,7 +124,7 @@ class App extends Component {
      While the tones are playing prevent further button 
      presses (except power switch)
   */
-  playSequence = (colors, delay = 600) => {
+  playSequence = (colors, delay = 800) => {
     this.isPlaying = true
     this.toneTimers = colors.map((color, index) => {
       return setTimeout(() => {
