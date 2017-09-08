@@ -24,12 +24,12 @@ const ControlPanel = ({
   style,
   powerState,
   strictMode,
-  displayConfig,
+  count,
+  blinking,
   handleStrictButton,
   handleStartButton,
   handlePowerSwitch,
 }) => {
-  const { count, blinking } = displayConfig
   Object.assign(styles.panel, style)
   const hasPower = powerState === PowerState.On
   return (
@@ -78,7 +78,8 @@ ControlPanel.propTypes = {
   style: PropTypes.object.isRequired,
   powerState: PropTypes.string.isRequired,
   strictMode: PropTypes.bool.isRequired,
-  displayConfig: PropTypes.object.isRequired,
+  count: PropTypes.number.isRequired,
+  blinking: PropTypes.bool.isRequired,
   handleStrictButton: PropTypes.func.isRequired,
   handleStartButton: PropTypes.func.isRequired,
   handlePowerSwitch: PropTypes.func.isRequired,

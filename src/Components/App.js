@@ -30,10 +30,9 @@ class App extends Component {
       powerState: PowerState.On, // FIXME: Development setting only
       strictMode: false,
       panelPressed: panelPressed,
-      displayConfig: {
-        count: 0,
-        blinking: false,
-      },
+      count: 0,
+      blinking: false,
+      displayConfig: {},
     }
   }
   generateGameColorSequence = () => {
@@ -61,9 +60,27 @@ class App extends Component {
     this.setState({
       powerState,
       strictMode: false,
-      displayConfig: { count: 0, blinking: false },
+      count: 0,
+      blinking: false,
     })
     this.stopPlaying()
+  }
+  // Start (or restart) the game
+  handleStartButton = async () => {
+    let { count } = this.state
+    // if game is already running restart!
+    if (count > 0) {
+      this.gameColorSequence = this.generateGameColorSequence()
+      this.stopPlaying()
+      count = 0
+      this.setState({ count })
+    }
+    await this.blinkDisplay()
+    this.setState({ count: count + 1 })
+    this.mainGameLoop()
+  }
+  mainGameLoop = () => {
+    this.playGameSequence()
   }
   handleStrictButton = () => {
     if (!this.isPlaying) {
@@ -72,24 +89,17 @@ class App extends Component {
       })
     }
   }
-  playGameSequence = () => {
-    if (this.state.powerState === PowerState.On && !this.isPlaying) {
-      const { count } = this.state.displayConfig
-      const currentSequence = this.gameColorSequence.slice(0, count)
-      this.playSequence(currentSequence)
-    }
-  }
-  handleStartButton = async () => {
-    await this.blinkDisplay()
-    const count = this.state.displayConfig.count + 1
-    const displayConfig = { count }
-    this.setState({ displayConfig })
-    this.playGameSequence()
-  }
   handlePanelClick = color => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
       this.player.play(color)
       this.lightPanel(color)
+    }
+  }
+  playGameSequence = () => {
+    if (this.state.powerState === PowerState.On && !this.isPlaying) {
+      const { count } = this.state
+      const currentSequence = this.gameColorSequence.slice(0, count)
+      this.playSequence(currentSequence)
     }
   }
   lightPanel(color, duration = 300) {
@@ -105,13 +115,10 @@ class App extends Component {
   }
   blinkDisplay = async (duration = 2400) => {
     const promise = new Promise(resolve => {
-      let displayConfig = { ...this.state.displayConfig }
-      displayConfig.blinking = true
-      this.setState({ displayConfig })
+      this.setState({ blinking: true })
 
       setTimeout(() => {
-        displayConfig.blinking = false
-        this.setState({ displayConfig })
+        this.setState({ blinking: false })
         resolve()
       }, duration)
     })
@@ -172,7 +179,8 @@ class App extends Component {
           <ControlPanel
             powerState={this.state.powerState}
             strictMode={this.state.strictMode}
-            displayConfig={this.state.displayConfig}
+            count={this.state.count}
+            blinking={this.state.blinking}
             style={styles.control}
             handleStrictButton={this.handleStrictButton}
             handleStartButton={this.handleStartButton}
@@ -215,7 +223,7 @@ const styles = {
   control: {
     position: 'relative',
     top: '-484px',
-    background: 'white',
+    background: '#ececec',
     borderRadius: '300px',
     border: '16px solid black',
     zIndex: '1',
