@@ -47,7 +47,7 @@ class App extends Component {
     let randomNumber
     let sequence = []
     for (let index = 0; index < 20; index++) {
-      randomNumber = Math.floor(Math.random() * 4)
+      randomNumber = Math.floor(Math.random() * colors.length)
       sequence.push(colors[randomNumber])
     }
     return sequence
@@ -94,10 +94,8 @@ class App extends Component {
   }
   handlePanelClick = color => {
     if (this.state.powerState === PowerState.On && !this.isPlaying) {
-      this.player.play(color)
+      this.player.playToneFor(color)
       this.lightPanel(color)
-
-      // check player sequence
       this.checkPlayerSequence(color)
     }
   }
@@ -114,8 +112,8 @@ class App extends Component {
           this.playGameSequence(count)
         }, 1000)
       } else {
-        // handle player failure
-        console.log('You pressed the wrong color!')
+        // player pressed the wrong button
+        setTimeout(() => this.player.wrongButton(), 1000)
       }
     }
   }
@@ -131,7 +129,7 @@ class App extends Component {
       this.playSequence(currentSequence)
     }
   }
-  lightPanel(color, duration = 300) {
+  lightPanel(color, duration = 400) {
     // light up color panel for a short time
     let panelPressed = { ...this.state.panelPressed }
     panelPressed[color] = true
@@ -153,24 +151,30 @@ class App extends Component {
     })
     return promise
   }
-  /* 
-     Note: if the delay is made is too short not all tones
-     will be played as they interfere with each other.
-
-     While the tones are playing prevent further button 
-     presses (except power switch)
-  */
-  playSequence = (colors, delay = 800) => {
+  /**
+   * Play a sequence of tones for the given colors.
+   * 
+   * @param {array} colors - the color sequence
+   * @param {number} delay - the interval between tones
+   * 
+   * @memberof App
+   */
+  playSequence = (colors, interval = 800) => {
     this.isPlaying = true
     this.toneTimers = colors.map((color, index) => {
       return setTimeout(() => {
         this.lightPanel(color, 400)
-        this.player.play(color)
-      }, delay * index)
+        this.player.playToneFor(color)
+      }, interval * index)
     })
     // Clear isPlaying when sequence finishes
-    setTimeout(() => (this.isPlaying = false), delay * colors.length)
+    setTimeout(() => (this.isPlaying = false), interval * colors.length)
   }
+  /**
+   * Stop playing sequence early
+   * 
+   * @memberof App
+   */
   stopPlaying = () => {
     if (this.isPlaying) {
       this.toneTimers.forEach(timer => clearTimeout(timer))

@@ -1,7 +1,4 @@
-import Sound1 from './Sound1.mp3'
-import Sound2 from './Sound2.mp3'
-import Sound3 from './Sound3.mp3'
-import Sound4 from './Sound4.mp3'
+import Sound from './sound'
 
 import Color from '../Enums/PanelColor'
 
@@ -13,14 +10,27 @@ import Color from '../Enums/PanelColor'
  */
 export default class Player {
   constructor() {
+    // Setup Audio Context
+    const context = new (window.AudioContext || window.webkitAudioContext)()
+    this.sound = new Sound(context, true)
+
     this.Tones = {
-      [Color.Red]: new Audio(Sound1),
-      [Color.Blue]: new Audio(Sound2),
-      [Color.Yellow]: new Audio(Sound3),
-      [Color.Green]: new Audio(Sound4),
+      [Color.Red]: this.redTone,
+      [Color.Blue]: this.blueTone,
+      [Color.Yellow]: this.yellowTone,
+      [Color.Green]: this.greenTone,
     }
   }
-  play = sound => {
-    this.Tones[sound].play()
+  playToneFor = sound => {
+    this.Tones[sound]()
+  }
+  redTone = () => this.sound.play(233.08)
+  yellowTone = () => this.sound.play(246.94)
+  blueTone = () => this.sound.play(261.63)
+  greenTone = () => this.sound.play(293.66)
+  wrongButton = () => {
+    this.sound.waveform = 'square'
+    this.sound.play(196.0, 1000)
+    this.sound.waveform = 'triangle'
   }
 }
