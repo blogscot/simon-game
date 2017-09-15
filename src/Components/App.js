@@ -33,6 +33,7 @@ class App extends Component {
       strictMode: false,
       panelPressed: panelPressed,
       count: 0,
+      displayText: '--',
       blinking: false,
       displayConfig: {},
     }
@@ -63,6 +64,7 @@ class App extends Component {
       powerState,
       strictMode: false,
       count: 0,
+      displayText: '--',
       blinking: false,
     })
     this.stopPlaying()
@@ -78,11 +80,11 @@ class App extends Component {
       this.gameColorSequence = this.generateGameColorSequence()
       this.stopPlaying()
       count = 0
-      this.setState({ count })
+      this.setState({ count, displayText: '--' })
     }
     await this.blinkDisplay()
     count += 1
-    this.setState({ count })
+    this.setState({ count, displayText: count.toString() })
     this.playGameSequence(count)
   }
   handleStrictButton = () => {
@@ -110,7 +112,7 @@ class App extends Component {
           let count = this.state.count + 1
           this.playerColorSequence = []
           setTimeout(() => {
-            this.setState({ count })
+            this.setState({ count, displayText: count.toString() })
             this.playGameSequence(count)
           }, 1000)
         }
@@ -119,19 +121,25 @@ class App extends Component {
       }
     }
   }
-  handleWrongPanelPress = () => {
+  handleWrongPanelPress = async () => {
     this.tonePlayer.errorTone()
-    setTimeout(() => {
-      this.playerColorSequence = []
-      if (this.state.strictMode) {
-        // restart from scratch
-        this.gameColorSequence = this.generateGameColorSequence()
-        this.setState({ count: 0 })
-        this.handleStartButton()
-      } else {
-        this.playGameSequence(this.state.count)
-      }
-    }, 2000)
+
+    // blink error message
+    const { displayText } = this.state
+    this.setState({ displayText: '!!' })
+    await this.blinkDisplay()
+    this.setState({ displayText })
+
+    this.playerColorSequence = []
+    if (this.state.strictMode) {
+      // restart from scratch
+      this.gameColorSequence = this.generateGameColorSequence()
+      // Wait for blinking to finish
+      setTimeout(() => this.setState({ count: 0 }), 800)
+      this.handleStartButton()
+    } else {
+      this.playGameSequence(this.state.count)
+    }
   }
   /**
    * Checks the current user input matches the expected game sequence
@@ -162,7 +170,7 @@ class App extends Component {
       this.setState({ panelPressed })
     }, duration)
   }
-  blinkDisplay = async (duration = 2400) => {
+  blinkDisplay = async (duration = 1800) => {
     const promise = new Promise(resolve => {
       this.setState({ blinking: true })
 
@@ -234,7 +242,7 @@ class App extends Component {
           <ControlPanel
             powerState={this.state.powerState}
             strictMode={this.state.strictMode}
-            count={this.state.count}
+            text={this.state.displayText}
             blinking={this.state.blinking}
             style={styles.control}
             handleStrictButton={this.handleStrictButton}

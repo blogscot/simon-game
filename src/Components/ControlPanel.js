@@ -24,7 +24,7 @@ const ControlPanel = ({
   style,
   powerState,
   strictMode,
-  count,
+  text,
   blinking,
   handleStrictButton,
   handleStartButton,
@@ -36,7 +36,7 @@ const ControlPanel = ({
     <div style={styles.panel}>
       <Logo />
       <div style={styles.strip}>
-        <Display count={count}
+        <Display text={text}
           blinking={blinking}
           hasPower={hasPower} />
         <Button text={'start'}
@@ -78,7 +78,7 @@ ControlPanel.propTypes = {
   style: PropTypes.object.isRequired,
   powerState: PropTypes.string.isRequired,
   strictMode: PropTypes.bool.isRequired,
-  count: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
   blinking: PropTypes.bool.isRequired,
   handleStrictButton: PropTypes.func.isRequired,
   handleStartButton: PropTypes.func.isRequired,

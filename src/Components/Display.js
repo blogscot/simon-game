@@ -7,13 +7,12 @@ import PropTypes from 'prop-types'
  * The Display component shows the current number of
  * presses to be repeated by the player.
  * 
- * @param {number} count - the current number in the game sequence
+ * @param {string} text - the current number in the game sequence
  * @param {boolean} blink - display info blinks
- * @param {boolean} displayOn - is the display currently enabled?
+ * @param {boolean} hasPower - is the display currently enabled?
  * @returns component
  */
-const Display = ({ count, blinking, hasPower }) => {
-  const text = count ? count : '--'
+const Display = ({ text, blinking, hasPower }) => {
   return (
     <Container>
       {hasPower ? blinking ? (
@@ -60,7 +59,7 @@ const Label = styled.div`
 `
 
 Display.propTypes = {
-  count: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
   blinking: PropTypes.bool,
   hasPower: PropTypes.bool.isRequired,
 }
