@@ -3,7 +3,7 @@ import Panel from './Panel'
 import ControlPanel from './ControlPanel'
 import PanelColor from '../Enums/PanelColor'
 import PowerState from '../Enums/PowerState'
-import Player from '../Audio/Player'
+import TonePlayer from '../Audio/TonePlayer'
 
 /**
  * The App component encapsulates the Simon game's
@@ -15,8 +15,8 @@ import Player from '../Audio/Player'
 class App extends Component {
   constructor() {
     super()
-    this.player = new Player()
-    this.isPlaying = false
+    this.tonePlayer = new TonePlayer()
+    this.isPlayingSequence = false
     this.expectedColorSequence = null
     this.playerColorSequence = []
     this.gameColorSequence = this.generateGameColorSequence()
@@ -86,50 +86,72 @@ class App extends Component {
     this.playGameSequence(count)
   }
   handleStrictButton = () => {
-    if (!this.isPlaying) {
-      this.setState({
-        strictMode: !this.state.strictMode,
-      })
-    }
+    this.setState({
+      strictMode: !this.state.strictMode,
+    })
   }
   handlePanelClick = color => {
-    if (this.state.powerState === PowerState.On && !this.isPlaying) {
-      this.player.playToneFor(color)
+    if (
+      this.state.powerState === PowerState.On &&
+      this.state.count > 0 &&
+      !this.isPlayingSequence
+    ) {
+      this.playerColorSequence.push(color)
       this.lightPanel(color)
-      this.checkPlayerSequence(color)
-    }
-  }
-  checkPlayerSequence = color => {
-    this.playerColorSequence.push(color)
-    const { count } = this.state
-    if (this.playerColorSequence.length === count) {
-      if (this.isPlayerSequenceValid()) {
-        // Pause before showing next sequence
-        setTimeout(() => {
+
+      // check panel is the expected panel
+      const playerSeq = this.playerColorSequence
+      const expectedSeq = this.expectedColorSequence
+
+      if (this.isPlayerSequenceValid(playerSeq, expectedSeq)) {
+        this.tonePlayer.playToneFor(color)
+        // check if player has completed the sequence
+        if (playerSeq.length === expectedSeq.length) {
           let count = this.state.count + 1
-          this.setState({ count })
           this.playerColorSequence = []
-          this.playGameSequence(count)
-        }, 1000)
+          setTimeout(() => {
+            this.setState({ count })
+            this.playGameSequence(count)
+          }, 1000)
+        }
       } else {
-        // player pressed the wrong button
-        setTimeout(() => this.player.wrongButton(), 1000)
+        this.handleWrongPanelPress()
       }
     }
   }
-  isPlayerSequenceValid = () => {
-    const player = this.playerColorSequence
-    const expected = this.expectedColorSequence
-    return player.reduce((acc, item, index) => item === expected[index], true)
+  handleWrongPanelPress = () => {
+    this.tonePlayer.errorTone()
+    setTimeout(() => {
+      this.playerColorSequence = []
+      if (this.state.strictMode) {
+        // restart from scratch
+        this.gameColorSequence = this.generateGameColorSequence()
+        this.setState({ count: 0 })
+        this.handleStartButton()
+      } else {
+        this.playGameSequence(this.state.count)
+      }
+    }, 2000)
+  }
+  /**
+   * Checks the current user input matches the expected game sequence
+   * 
+   * @memberof App
+   */
+  isPlayerSequenceValid = (playerSeq, expectedSeq) => {
+    return playerSeq.reduce(
+      (acc, item, index) => item === expectedSeq[index],
+      true
+    )
   }
   playGameSequence = count => {
-    if (this.state.powerState === PowerState.On && !this.isPlaying) {
+    if (this.state.powerState === PowerState.On && !this.isPlayingSequence) {
       const currentSequence = this.gameColorSequence.slice(0, count)
       this.expectedColorSequence = currentSequence
       this.playSequence(currentSequence)
     }
   }
-  lightPanel(color, duration = 400) {
+  lightPanel(color, duration = 600) {
     // light up color panel for a short time
     let panelPressed = { ...this.state.panelPressed }
     panelPressed[color] = true
@@ -160,15 +182,15 @@ class App extends Component {
    * @memberof App
    */
   playSequence = (colors, interval = 800) => {
-    this.isPlaying = true
+    this.isPlayingSequence = true
     this.toneTimers = colors.map((color, index) => {
       return setTimeout(() => {
-        this.lightPanel(color, 400)
-        this.player.playToneFor(color)
+        this.lightPanel(color)
+        this.tonePlayer.playToneFor(color)
       }, interval * index)
     })
     // Clear isPlaying when sequence finishes
-    setTimeout(() => (this.isPlaying = false), interval * colors.length)
+    setTimeout(() => (this.isPlayingSequence = false), interval * colors.length)
   }
   /**
    * Stop playing sequence early
@@ -176,7 +198,7 @@ class App extends Component {
    * @memberof App
    */
   stopPlaying = () => {
-    if (this.isPlaying) {
+    if (this.isPlayingSequence) {
       this.toneTimers.forEach(timer => clearTimeout(timer))
     }
   }

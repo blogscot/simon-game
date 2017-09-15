@@ -8,7 +8,7 @@ import Color from '../Enums/PanelColor'
  * @export class
  * @class Player
  */
-export default class Player {
+export default class TonePlayer {
   constructor() {
     // Setup Audio Context
     const context = new (window.AudioContext || window.webkitAudioContext)()
@@ -28,7 +28,7 @@ export default class Player {
   yellowTone = () => this.sound.play(246.94)
   blueTone = () => this.sound.play(261.63)
   greenTone = () => this.sound.play(293.66)
-  wrongButton = () => {
+  errorTone = () => {
     this.sound.waveform = 'square'
     this.sound.play(196.0, 1000)
     this.sound.waveform = 'triangle'
